@@ -1,0 +1,62 @@
+---
+- hosts: all
+  roles:
+    - role: supertarto.apache
+    - role: supertarto.mariadb
+    - role: supertarto.php
+    - role: supertarto.glpi
+  vars:
+    glpi_version: 10.0.7
+    glpi_version_package: glpi-10.0.7.tgz
+    glpi_update: false
+    glpi_download_url: "https://github.com/glpi-project/glpi/releases/download/{{ glpi_version }}/{{ glpi_version_package }}"
+    php_packages:
+      - php7.4
+      - php7.4-gd
+      - php7.4-mysql
+      - php7.4-curl
+      - php7.4-imap
+      - php7.4-json
+      - php7.4-ldap
+      - php7.4-mbstring
+      - php7.4-xml
+      - php7.4-cli
+      - php7.4-xmlrpc
+      - php7.4-intl
+      - php-apcu
+      - php-cas
+      - php7.4-zip
+      - php7.4-bz2
+    glpi_db_host: "localhost"
+    glpi_db_port: "3306"
+    glpi_db_name: "glpi"
+    glpi_db_user: "glpi"
+    glpi_db_password: "glpi"
+    apache_create_vhosts: true
+    apache_vhosts_filename: "glpi.conf"
+    apache_vhost_config:
+      - listen_ip: "*"
+        listen_port: 80
+        server_name: host1
+        documentroot: "/var/www/glpi"
+        serveradmin: admin@localhost
+        custom_param: |
+          ErrorLog ${APACHE_LOG_DIR}/error.log
+          CustomLog ${APACHE_LOG_DIR}/access.log combined
+          LogLevel warn
+        directory:
+          - path: "/var/www/glpi"
+            config: |
+              AllowOverride All
+              Order deny,allow
+              allow from all
+
+    mariadb_use_dump_script: false
+    mariadb_databases:
+      - name: "{{ glpi_db_name }}"
+
+    mariadb_users:
+      - name: "{{ glpi_db_user }}"
+        host: "{{ glpi_db_host }}"
+        password: "{{ glpi_db_password }}"
+        priv: "{{ glpi_db_name }}.*:SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,CREATE TEMPORARY TABLES,LOCK TABLES"
