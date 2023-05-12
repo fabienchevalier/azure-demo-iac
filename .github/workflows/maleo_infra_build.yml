@@ -14,19 +14,34 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup `packer`
+      - name: Prepare environment variables
+        env:
+          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+        run: |
+          # Parse Azure secret into Packer variables
+          export ARM_CLIENT_ID = $(cat $AZURE_CREDENTIALS | jq -r '.clientId') 
+          export ARM_CLIENT_SECRET = $(cat $AZURE_CREDENTIALS | jq -r '.clientSecret')
+          export ARM_SUBSCRIPTION_ID = $(cat $AZURE_CREDENTIALS | jq -r '.subscriptionId')
+          export ARM_TENANT_ID = $(cat $AZURE_CREDENTIALS | jq -r '.tenantId')
+
+      - name: Setup packer
         uses: hashicorp/setup-packer@main
         id: setup
         with:
           version: ${{ env.PRODUCT_VERSION }}
 
-      - name: Run `packer init`
+      - name: Run packer init
         id: init
         run: "packer init packer.pkr.hcl"
 
-      - name: Run `packer validate`
-        id: validate
-        run: "packer validate packer.pkr.hcl"
+      - name: Validate image with Packer
+        run: |
+          packer validate \
+            -var "client_id=$ARM_CLIENT_ID \
+            -var "client_secret=$ARM_CLIENT_SECRET \
+            -var "tenant_id=$ARM_SUBSCRIPTION_ID \
+            -var "subscription-id$ARM_TENANT_ID \
+            packer.pkr.hcl
 
   packer_build:
     runs-on: ubuntu-latest
@@ -76,11 +91,4 @@ jobs:
       - name: Export VHD ID to text file
         run: |
           VHD_ID=$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)
-          echo "${VHD_ID}" > output.txt
-          cat output.txt
-
-      - name: Upload packer's output artefact
-        uses: actions/upload-artifact@v2
-        with:
-          name: packer_output
-          path: output.txt
+          echo "${VHD_ID}"
