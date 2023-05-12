@@ -5,6 +5,10 @@ on:
 
 env:
   PRODUCT_VERSION: "latest" # or: "latest"
+  ARM_CLIENT_ID: "${{ secrets.ARM_CLIENT_ID }}"
+  ARM_CLIENT_SECRET: "${{ secrets.ARM_CLIENT_SECRET }}"
+  ARM_SUBSCRIPTION_ID: "${{ secrets.ARM_SUBSCRIPTION_ID }}"
+  ARM_TENANT_ID: "${{ secrets.ARM_TENANT_ID }}"
 
 jobs:
   packer_validate:
@@ -13,16 +17,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-
-      - name: Prepare environment variables
-        env:
-          AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-        run: |
-          # Parse Azure secret into Packer variables
-          echo $(AZURE_CREDENTIALS | jq -r '.clientId') >> $ARM_CLIENT_ID
-          echo $(AZURE_CREDENTIALS | jq -r '.clientSecret') >> $ARM_CLIENT_SECRET
-          echo $(AZURE_CREDENTIALS | jq -r '.subscriptionId') >> $ARM_SUBSCRIPTION_ID
-          echo $(AZURE_CREDENTIALS | jq -r '.tenantId') >> $ARM_TENANT_ID
 
       - name: Setup packer
         uses: hashicorp/setup-packer@main
@@ -54,7 +48,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v1
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.ARM_CLIENT_ID }}
+          tenant-id: ${{ secrets.ARM_TENANT_ID }}
+          subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
 
       - name: Prepare environment variables
         env:
