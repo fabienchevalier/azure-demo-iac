@@ -19,10 +19,10 @@ jobs:
           AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
         run: |
           # Parse Azure secret into Packer variables
-          echo $(cat $AZURE_CREDENTIALS | jq -r '.clientId') >> $ARM_CLIENT_ID
-          echo $(cat $AZURE_CREDENTIALS | jq -r '.clientSecret') >> $ARM_CLIENT_SECRET
-          echo $(cat $AZURE_CREDENTIALS | jq -r '.subscriptionId') >> $ARM_SUBSCRIPTION_ID
-          echo $(cat $AZURE_CREDENTIALS | jq -r '.tenantId') >> $ARM_TENANT_ID
+          echo $(AZURE_CREDENTIALS | jq -r '.clientId') >> $ARM_CLIENT_ID
+          echo $(AZURE_CREDENTIALS | jq -r '.clientSecret') >> $ARM_CLIENT_SECRET
+          echo $(AZURE_CREDENTIALS | jq -r '.subscriptionId') >> $ARM_SUBSCRIPTION_ID
+          echo $(AZURE_CREDENTIALS | jq -r '.tenantId') >> $ARM_TENANT_ID
 
       - name: Setup packer
         uses: hashicorp/setup-packer@main
