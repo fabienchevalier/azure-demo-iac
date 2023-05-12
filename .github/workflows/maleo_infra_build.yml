@@ -3,6 +3,10 @@ name: Packer Build VHD
 on:
   push:
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   PRODUCT_VERSION: "latest" # or: "latest"
   ARM_CLIENT_ID: "${{ secrets.ARM_CLIENT_ID }}"
