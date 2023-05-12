@@ -1,2 +1,3 @@
-# azure-glpi-iac
-Deploy a fully functional GLPI appliance using Packer and Terraform on Azure Cloud
+# Azure Webserver CI/CD
+
+Build a VHD image using Packer and Ansible then deploy it to Azure Cloud using Terraform
