@@ -1,5 +1,37 @@
 ---
-- hosts: all
+- name: Deploy Static Website with Nginx
+  hosts: all
   become: true
-  roles:
-    - webserver
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      tags: [apt]
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+      tags: [nginx]
+
+    - name: Copy website files
+      copy:
+        src: files/
+        dest: /var/www/html
+      tags: [nginx]
+
+    - name: Set permissions for website files
+      file:
+        path: /var/www/html
+        state: directory
+        recurse: yes
+        owner: www-data
+        group: www-data
+      tags: [nginx]
+
+    - name: Enable Nginx service
+      systemd:
+        name: nginx
+        state: started
+        enabled: yes
+      tags: [nginx]

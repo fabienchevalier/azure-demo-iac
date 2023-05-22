@@ -1,3 +1,0 @@
-apache_listen_port: 80
-apache_vhosts:
-  - {servername: "maleo.com", documentroot: "/var/www/vhosts/maleo_com"}
