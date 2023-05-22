@@ -1,9 +1,3 @@
-data "azurerm_shared_image" "example" {
-  name                = "my-image"
-  gallery_name        = "my-image-gallery"
-  resource_group_name = "example-resources-imageRG"
-}
-
 resource "azurerm_resource_group" "example" {
   name     = "example-resources"
   location = "xxxxximageregion"
@@ -51,6 +45,6 @@ resource "azurerm_linux_virtual_machine" "example" {
     storage_account_type = "Standard_LRS"
   }
 
-  source_image_id = data.azurerm_shared_image.example.id
+  source_image_id = "/subscriptions/<subscription_id>/resourceGroups/<resource_group>/providers/Microsoft.Compute/images/<image_name>"
 
 }
