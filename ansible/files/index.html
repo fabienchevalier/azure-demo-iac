@@ -1,2 +1,58 @@
-<h1>Hello Maleo</h1>
-<p>Build succesfull!</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>E-boutique Maléo</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .header {
+        background-color: grey;
+        color: white;
+        padding: 15px;
+        text-align: center;
+      }
+      .logo {
+        max-width: 200px;
+      }
+      .product-list {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .product {
+        width: 200px;
+        margin: 10px;
+        text-align: center;
+      }
+      .product-image {
+        max-width: 100%;
+      }
+      .product-name {
+        font-weight: bold;
+      }
+      .product-price {
+        color: #4CAF50;
+      }
+    </style>
+</head>
+<body>
+<div class="header">
+    <img class="logo" src="maleo-logo.png" alt="Logo Maléo">
+</div>
+<h2>Bienvenue sur la e-boutique Maléo</h2>
+<p>Découvrez notre sélection de produits:</p>
+<div class="product-list">
+    <div class="product">
+        <img class="product-image" src="produit1.jpg" alt="Produit 1">
+        <div class="product-name">Produit 1</div>
+        <div class="product-price">450€</div>
+    </div>
+    <div class="product">
+        <img class="product-image" src="produit2.jpg" alt="Produit 2">
+        <div class="product-name">Produit 2</div>
+        <div class="product-price">850€</div>
+    </div>
+</div>
+</body>
+</html>

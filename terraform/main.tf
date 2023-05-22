@@ -2,9 +2,15 @@ provider "azurerm" {
   features {}
 }
 
+variable "image-id" {
+  type        = string
+  description = "Latest VHD build ID for the image"
+  default     = "/subscriptions/ff40214c-1713-4671-8ba1-137e542a8c82/resourceGroups/packer-resource-group/providers/Microsoft.Compute/images/webserver-image-latest"
+}
+
 resource "azurerm_resource_group" "maleo_rg" {
   name     = "maleo-resource-group"
-  location = "West Europe"
+  location = "France Central"
 }
 
 resource "azurerm_virtual_network" "maleo_vnet" {
@@ -72,10 +78,10 @@ resource "azurerm_virtual_machine" "maleo_vm" {
   location              = azurerm_resource_group.maleo_rg.location
   resource_group_name   = azurerm_resource_group.maleo_rg.name
   network_interface_ids = [azurerm_network_interface.maleo_nic.id]
-  vm_size               = "Standard_Bs1"
+  vm_size               = "Standard_B1s"
 
   storage_image_reference {
-   id = "maleo-image"
+   id = var.image-id
   }
 
   storage_os_disk {
