@@ -1,3 +1,7 @@
 ---
 webserver_packages:
   - nginx
+
+webserver_static_sites:
+  - name: hello.maleo.com
+    root: /usr/share/nginx/hello.maleo.com
