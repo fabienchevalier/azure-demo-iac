@@ -1,4 +1,4 @@
-name: Packer Deploy Terraform
+name: Delete infra
 
 
 on:
