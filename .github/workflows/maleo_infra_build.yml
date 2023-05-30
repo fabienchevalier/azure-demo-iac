@@ -56,7 +56,7 @@ jobs:
 
       - name: Build image with Packer and Ansible
         run: |
-          packer build packer.pkr.hcl
+          packer build packer.pkr.hcl -force
 
       - name: Export VHD ID to logs
         run: |
