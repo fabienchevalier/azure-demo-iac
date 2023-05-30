@@ -30,6 +30,6 @@ jobs:
         working-directory: terraform
         run: terraform init
 
-      - name: Terraform Apply
+      - name: Terraform Destroy
         working-directory: terraform
         run: cd terraform && terraform destroy -auto-approve
