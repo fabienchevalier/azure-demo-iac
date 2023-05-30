@@ -35,3 +35,10 @@
         state: started
         enabled: yes
       tags: [nginx]
+
+    - name: Onboard AMA log agent
+      shell: wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w 2d41eca9-4a68-4a78-a75c-4da7c4797c32 -s S+zNVWGwp5zl2JZZzUhvzHGo9l5KvljqcgQ0C5oXFuqQEaleZs+fEu8n42KV+drnHH1Nu/HHF3sh9lh5Ze9OIA== -d opinsights.azure.com
+
+    - name: Wait 60sec for AMA agent to start
+      wait_for:
+        timeout: 60
