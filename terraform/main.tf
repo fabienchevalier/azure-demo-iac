@@ -36,6 +36,7 @@ resource "azurerm_network_interface" "maleo_nic" {
     name                          = "maleo-nic-config"
     subnet_id                     = azurerm_subnet.maleo_subnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.maleo_public_ip.id
   }
 }
 
